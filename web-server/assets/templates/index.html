@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>2048 via HTMX and Go</title>
+	<link rel="stylesheet" href="/assets/style/base.css">
+	<link rel="stylesheet" href="/assets/style/style.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body class="root">
+	<div hx-get="/up" hx-trigger="keyup[key=='w'] from:body, keyup[key=='ArrowUp'] from:body" hx-target="#board"></div>	
+	<div hx-get="/left" hx-trigger="keyup[key=='a'] from:body, keyup[key=='ArrowLeft'] from:body" hx-target="#board"></div>	
+	<div hx-get="/right" hx-trigger="keyup[key=='d'] from:body, keyup[key=='ArrowRight'] from:body" hx-target="#board"></div>	
+	<div hx-get="/down" hx-trigger="keyup[key=='s'] from:body, keyup[key=='ArrowDown'] from:body" hx-target="#board"></div>	
+
+	<div hx-get="/enter" hx-trigger="keyup[key=='Enter'] from:body" hx-target="#board"></div>	
+	<div hx-get="/reset" hx-trigger="keyup[key=='Backspace'] from:body" hx-target="#board"></div>	
+
+	<div class="board" id="board" hx-swap="innerHTML"
+		>
+		<div data-value="2">2</div>
+		<div data-value="4">4</div>
+		<div data-value="8">8</div>
+		<div data-value="16">16</div>
+
+		<div data-value="32">32</div>
+		<div data-value="64">64</div>
+		<div data-value="128">128</div>
+		<div data-value="256">256</div>
+
+		<div data-value="512">512</div>
+		<div data-value="1024">1024</div>
+		<div data-value="2048">2048</div>
+		<div data-value="4096">4096</div>
+
+		<div data-value="8192">8192</div>
+		<div data-value="16384">16384</div>
+		<div data-value=""></div>
+		<div data-value="10000">10000</div>
+	</div>
+
+	<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+</body>
+</html>

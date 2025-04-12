@@ -1,0 +1,67 @@
+
+.root {
+	background: var(--color-gray-300);
+	height: 100dvh;
+	padding: 0;
+	margin: 0;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.board {
+	--cell-size: 7rem;
+	--gap-size: 1rem;
+	--cell-radius: 0.75rem;
+	--padding: 2rem;
+
+	padding: var(--padding);
+	background: white;
+	border-radius: calc(var(--cell-radius) + var(--padding) - 0.25rem);
+
+	display: grid;
+	grid-template-columns: repeat(4, var(--cell-size));
+	grid-template-rows: repeat(4, var(--cell-size));
+	gap: var(--gap-size);
+
+
+	font-family: "Noto Sans", sans-serif;
+	font-weight: 500;
+	font-size: 2rem;
+}
+
+/* Cell */
+
+cell {
+	--bg: red;
+	--text: white;
+	
+	width: var(--cell-size);
+	height: var(--cell-size);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	border-radius: var(--cell-radius);
+	background: var(--bg);
+	color: var(--text);
+}
+
+cell[data-value=""]			{ --bg: var(--color-gray-100); --text: var(--color-gray-800);		}
+
+cell[data-value="2"]			{ --bg: var(--color-orange-100); --text: var(--color-orange-700);	}
+cell[data-value="4"]			{ --bg: var(--color-orange-200); --text: var(--color-orange-700);	}
+cell[data-value="8"]			{ --bg: var(--color-amber-200); --text: var(--color-amber-700);		}
+cell[data-value="16"]		{ --bg: var(--color-amber-300); --text: var(--color-amber-700);		}
+cell[data-value="32"]		{ --bg: var(--color-yellow-300); --text: var(--color-yellow-700);	}
+cell[data-value="64"]		{ --bg: var(--color-orange-300); --text: var(--color-orange-700);	}
+cell[data-value="128"]		{ --bg: var(--color-yellow-400); --text: var(--color-yellow-700);	}
+cell[data-value="256"]		{ --bg: var(--color-orange-400); --text: var(--color-yellow-700);	}
+cell[data-value="512"]		{ --bg: var(--color-amber-300); --text: var(--color-amber-700);		}
+cell[data-value="1024"]	{ --bg: var(--color-amber-400); --text: var(--color-amber-700);		}
+cell[data-value="2048"]	{ --bg: var(--color-rose-300); --text: var(--color-rose-700);		}
+cell[data-value="4096"]	{ --bg: var(--color-sky-300); --text: var(--color-sky-700);			}
+cell[data-value="8192"]	{ --bg: var(--color-purple-300); --text: var(--color-purple-700);	}
+cell[data-value="16384"]	{ --bg: var(--color-emerald-300); --text: var(--color-emerald-700);	}
