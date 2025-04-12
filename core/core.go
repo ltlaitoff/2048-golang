@@ -1,9 +1,10 @@
 package core
 
 import (
-	"log"
+	"log/slog"
 	"math/rand"
-	"assert"
+
+	"github.com/ltlaitoff/2048/pkg/assert"
 )
 
 /*
@@ -106,7 +107,6 @@ func Reset() {
 }
 
 func Up() {
-	log.Print("Call up")
 	SomeOperation(-1, 0, 1, 0, 0, 0)
 	addRandomCell()
 }
@@ -172,8 +172,10 @@ func getEmptyIndexes() [][2]int {
 
 	for i := 0; i < SIZE; i++ {
 		for j := 0; j < SIZE; j++ {
-			if board[i][j] != 0 { continue }
-			
+			if board[i][j] != 0 {
+				continue
+			}
+
 			res = append(res, [2]int{i, j})
 		}
 	}
@@ -192,16 +194,14 @@ func isBoardFull() bool {
 		}
 	}
 
-	return sum == 16
+	return sum == SIZE * SIZE
 }
 
-// TODO: Rewrite this piece of shit
 func addRandomCell() {
-
 	emptyIndexes := getEmptyIndexes()
 
 	if len(emptyIndexes) == 0 {
-		log.Print("Not add random cell")
+		slog.Debug("Not add random cell because all cells is not empty")
 		return
 	}
 
@@ -209,11 +209,13 @@ func addRandomCell() {
 	i := emptyIndexes[index][0]
 	j := emptyIndexes[index][1]
 
+	assert.Assert(board[i][j] == 0, "Board cell on random add not equal to 0")
 
-	if board[a][j] == 0 
+	isFour := rand.Intn(10)
+
+	if isFour == 9 {
+		board[i][j] = 4
+	} else {
 		board[i][j] = 2
-		return
 	}
-
-	addRandomCell()
 }

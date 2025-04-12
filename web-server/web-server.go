@@ -4,25 +4,28 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
-	"ltlaitoff/2048/core"
+
+	"github.com/ltlaitoff/2048/core"
 )
 
 var assets string = ""
+const DEBUG = true
 
 func render(w http.ResponseWriter) {
 	cells := ""
 
-	core.Map(func (value int64) {
-			cellValue := strconv.FormatInt(value, 10)
+	core.Map(func(value int64) {
+		cellValue := strconv.FormatInt(value, 10)
 
-			if cellValue == "0" {
-				cellValue = ""
-			}
+		if cellValue == "0" {
+			cellValue = ""
+		}
 
-			cells += fmt.Sprintf("<cell data-value=\"%s\">%s</cell>", cellValue, cellValue)
+		cells += fmt.Sprintf("<cell data-value=\"%s\">%s</cell>", cellValue, cellValue)
 	})
 
 	fmt.Fprintf(w, cells)
@@ -72,6 +75,9 @@ func resetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if DEBUG {
+		slog.SetLogLoggerLevel(slog.LevelDebug.Level())
+	}
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatalln(err)
