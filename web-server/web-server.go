@@ -13,6 +13,7 @@ import (
 )
 
 var assets string = ""
+
 const DEBUG = true
 
 func render(w http.ResponseWriter) {
@@ -75,6 +76,8 @@ func resetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	core.Init()
+
 	if DEBUG {
 		slog.SetLogLoggerLevel(slog.LevelDebug.Level())
 	}
