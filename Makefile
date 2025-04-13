@@ -1,9 +1,9 @@
 run-server:
-	go run ./web-server
+	go run .
 
 # Default run
 run:
-	go run ./web-server
+	go run .
 
 fmt:
 	go fmt github.com/ltlaitoff/...

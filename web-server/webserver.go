@@ -1,4 +1,4 @@
-package main
+package webserver
 
 import (
 	"fmt"
@@ -75,7 +75,7 @@ func resetHandler(w http.ResponseWriter, r *http.Request) {
 	render(w)
 }
 
-func main() {
+func Start() {
 	core.Init()
 
 	if DEBUG {
@@ -103,6 +103,6 @@ func main() {
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(assets+"/assets"))))
 
-	log.Printf("Started on http://localhost:8080")
+	slog.Info("Started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
