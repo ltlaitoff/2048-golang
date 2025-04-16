@@ -10,31 +10,35 @@
 	align-items: center;
 }
 
-.board {
-	--cell-size: 7rem;
-	--gap-size: 1rem;
-	--cell-radius: 0.75rem;
+#root {
 	--padding: 2rem;
+	--cell-radius: 0.75rem;
 
 	padding: var(--padding);
 	background: white;
 	border-radius: calc(var(--cell-radius) + var(--padding) - 0.25rem);
-
-	display: grid;
-	grid-template-columns: repeat(4, var(--cell-size));
-	grid-template-rows: repeat(4, var(--cell-size));
-	gap: var(--gap-size);
-
 
 	font-family: "Noto Sans", sans-serif;
 	font-weight: 500;
 	font-size: 2rem;
 }
 
+#board {
+	--cell-size: 7rem;
+	--gap-size: 1rem;
+
+	position: relative;
+
+	display: grid;
+	grid-template-columns: repeat(4, var(--cell-size));
+	grid-template-rows: repeat(4, var(--cell-size));
+	gap: var(--gap-size);
+}
+
 /* Cell */
 
 cell {
-	--bg: red;
+	--bg: var(--color-gray-100);
 	--text: white;
 	
 	width: var(--cell-size);
@@ -48,8 +52,6 @@ cell {
 	background: var(--bg);
 	color: var(--text);
 }
-
-cell[data-value=""]			{ --bg: var(--color-gray-100); --text: var(--color-gray-800);		}
 
 cell[data-value="2"]			{ --bg: var(--color-orange-100); --text: var(--color-orange-700);	}
 cell[data-value="4"]			{ --bg: var(--color-orange-200); --text: var(--color-orange-700);	}
@@ -65,3 +67,42 @@ cell[data-value="2048"]	{ --bg: var(--color-rose-300); --text: var(--color-rose-
 cell[data-value="4096"]	{ --bg: var(--color-sky-300); --text: var(--color-sky-700);			}
 cell[data-value="8192"]	{ --bg: var(--color-purple-300); --text: var(--color-purple-700);	}
 cell[data-value="16384"]	{ --bg: var(--color-emerald-300); --text: var(--color-emerald-700);	}
+
+/* Score */
+
+
+.menu {
+	margin-bottom: 1rem;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* DEV: Add some rainbow effect? */
+.title {
+	margin: 0;
+	padding: 0;
+
+	font-weight: 500;
+}
+
+.score {
+	padding: 0.25rem 0.5rem;
+	background: var(--color-slate-200);
+	border-radius: 1rem;
+
+	display: flex;
+	column-gap: 0.5rem;
+	align-items: center;
+
+	font-size: 1.75rem;
+
+	.score-text {
+
+	}
+
+	.score-value {
+
+	}
+}

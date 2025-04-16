@@ -1,0 +1,16 @@
+{{define "Root"}}
+
+<div class="menu">
+	<h2 class="title">2048</h2>
+	<div class="score">
+		<div class="score-text">Score:</div>
+		<div class="score-value">{{.Score}}</div>	
+	</div>
+</div>
+
+<div id="board">
+  {{range .Cells}} {{range .}}{{template "Cell" .}}{{end}} {{end}}
+</div>
+
+{{end}}
+

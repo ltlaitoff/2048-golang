@@ -14,36 +14,15 @@
 </head>
 
 <body class="root">
-	<div hx-get="/up" hx-trigger="keyup[key=='w'] from:body, keyup[key=='ArrowUp'] from:body" hx-target="#board"></div>	
-	<div hx-get="/left" hx-trigger="keyup[key=='a'] from:body, keyup[key=='ArrowLeft'] from:body" hx-target="#board"></div>	
-	<div hx-get="/right" hx-trigger="keyup[key=='d'] from:body, keyup[key=='ArrowRight'] from:body" hx-target="#board"></div>	
-	<div hx-get="/down" hx-trigger="keyup[key=='s'] from:body, keyup[key=='ArrowDown'] from:body" hx-target="#board"></div>	
+	<div hx-get="/top" hx-trigger="keyup[key=='w'] from:body, keyup[key=='ArrowUp'] from:body" hx-target="#root"></div>	
+	<div hx-get="/left" hx-trigger="keyup[key=='a'] from:body, keyup[key=='ArrowLeft'] from:body" hx-target="#root"></div>	
+	<div hx-get="/right" hx-trigger="keyup[key=='d'] from:body, keyup[key=='ArrowRight'] from:body" hx-target="#root"></div>	
+	<div hx-get="/bottom" hx-trigger="keyup[key=='s'] from:body, keyup[key=='ArrowDown'] from:body" hx-target="#root"></div>	
 
-	<div hx-get="/enter" hx-trigger="keyup[key=='Enter'] from:body" hx-target="#board"></div>	
-	<div hx-get="/reset" hx-trigger="keyup[key=='Backspace'] from:body" hx-target="#board"></div>	
-
-	<div class="board" id="board" hx-swap="innerHTML"
-		>
-		<cell data-value="2">2</cell>
-		<cell data-value="4">4</cell>
-		<cell data-value="8">8</cell>
-		<cell data-value="16">16</cell>
-
-		<cell data-value="32">32</cell>
-		<cell data-value="64">64</cell>
-		<cell data-value="128">128</cell>
-		<cell data-value="256">256</cell>
-
-		<cell data-value="512">512</cell>
-		<cell data-value="1024">1024</cell>
-		<cell data-value="2048">2048</cell>
-		<cell data-value="4096">4096</cell>
-
-		<cell data-value="8192">8192</cell>
-		<cell data-value="16384">16384</cell>
-		<cell data-value=""></cell>
-		<cell data-value="10000">10000</cell>
-	</div>
+	<div hx-get="/enter" hx-trigger="keyup[key=='Enter'] from:body" hx-target="#root"></div>	
+	<div hx-get="/reset" hx-trigger="keyup[key=='Backspace'] from:body" hx-target="#root"></div>	
+	
+	<div id="root" hx-swap="outerHTML">{{template "Root" .}}</div>
 
 	<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 </body>

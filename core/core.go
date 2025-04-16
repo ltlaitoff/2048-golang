@@ -1,65 +1,48 @@
 package core
 
-import (
-	"log/slog"
-	"math/rand"
+func Move(action string) bool {
+	if GameEnd(&board) {
+		return true
+	}
 
-	"github.com/ltlaitoff/2048/pkg/assert"
-)
+	MoveCells(&board, action)
+	RandomCell(&board)
 
-const SIZE = 4
+	return false
+}
 
-var board [SIZE][SIZE]int64
-
-func getEmptyIndexes() [][2]int {
-	res := make([][2]int, 0, 16)
-
-	for i := 0; i < SIZE; i++ {
-		for j := 0; j < SIZE; j++ {
-			if board[i][j] != 0 {
-				continue
-			}
-
-			res = append(res, [2]int{i, j})
+func Reset() {
+	for i := 0; i < 4; i++ {
+		for j := 0; j < 4; j++ {
+			board[i][j] = 0
 		}
 	}
 
-	return res
+	RandomCell(&board)
 }
 
-func isBoardFull() bool {
-	sum := 0
-
+func Map(callback func(value int64)) {
 	for i := 0; i < SIZE; i++ {
 		for j := 0; j < SIZE; j++ {
-			if board[i][j] != 0 {
-				sum += 1
-			}
+			callback(board[i][j])
+		}
+	}
+}
+
+func State() (Board, Score) {
+	return board, score
+
+}
+
+func Init() {
+	for i := 0; i < 4; i++ {
+		for j := 0; j < 4; j++ {
+			board[i][j] = 0
 		}
 	}
 
-	return sum == SIZE*SIZE
-}
-
-func addRandomCell() {
-	emptyIndexes := getEmptyIndexes()
-
-	if len(emptyIndexes) == 0 {
-		slog.Debug("Not add random cell because all cells is not empty")
-		return
-	}
-
-	index := rand.Intn(len(emptyIndexes))
-	i := emptyIndexes[index][0]
-	j := emptyIndexes[index][1]
-
-	assert.Assert(board[i][j] == 0, "Board cell on random add not equal to 0")
-
-	isFour := rand.Intn(10)
-
-	if isFour == 9 {
-		board[i][j] = 4
-	} else {
-		board[i][j] = 2
-	}
+	// board[0][3] = 4
+	// board[0][1] = 2
+	// board[0][2] = 2
+	// board[0][3] = 0
 }
