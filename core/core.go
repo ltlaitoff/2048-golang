@@ -18,6 +18,8 @@ func Reset() {
 		}
 	}
 
+	score = 0
+
 	RandomCell(&board)
 }
 
@@ -40,6 +42,8 @@ func Init() {
 			board[i][j] = 0
 		}
 	}
+
+	score = 0
 
 	// board[0][3] = 4
 	// board[0][1] = 2

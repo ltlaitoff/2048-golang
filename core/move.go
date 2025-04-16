@@ -48,7 +48,11 @@ func moveWithMerge(board *Board, data MoveData) {
 			newJ := x + data.NextX
 
 			if board[newI][newJ] == board[y][x] {
-				board[newI][newJ] = board[y][x] + board[newI][newJ]
+				newValue := board[y][x] + board[newI][newJ]
+
+				board[newI][newJ] = newValue
+				score += Score(newValue)
+
 				board[y][x] = 0
 			}
 		}
