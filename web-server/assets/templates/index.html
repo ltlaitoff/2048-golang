@@ -22,7 +22,7 @@
 	<div hx-get="/enter" hx-trigger="keyup[key=='Enter'] from:body" hx-target="#root"></div>	
 	<div hx-get="/reset" hx-trigger="keyup[key=='Backspace'] from:body" hx-target="#root"></div>	
 	
-	<div id="root" hx-swap="outerHTML">{{template "Root" .}}</div>
+	<div id="root" hx-swap="innerHTML">{{template "Root" .}}</div>
 
 	<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 </body>

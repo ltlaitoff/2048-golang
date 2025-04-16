@@ -15,6 +15,7 @@ import (
 type RenderData struct {
 	Score core.Score
 	Cells core.Board
+	IsEnd bool
 }
 
 var assetsPath string = ""
@@ -26,6 +27,7 @@ func InitRender(path string) {
 		assetsPath + "/assets/templates/index.html",
 		assetsPath + "/assets/templates/root.html",
 		assetsPath + "/assets/templates/cell.html",
+		assetsPath + "/assets/templates/end.html",
 	}
 }
 
@@ -64,12 +66,13 @@ func InitialRender(w http.ResponseWriter) {
 		log.Fatal("Cloning helpers: ", err)
 	}
 
-	cells, score := core.State()
+	cells, score, end := core.State()
 
 	var data RenderData
 
 	data.Cells = cells
 	data.Score = score
+	data.IsEnd = end
 
 	driver.ExecuteTemplate(w, "index.html", data)
 }
@@ -82,40 +85,14 @@ func Render(w http.ResponseWriter) {
 		log.Fatal("Cloning helpers: ", err)
 	}
 
-	cells, score := core.State()
+	cells, score, end := core.State()
 
 	var data RenderData
 
 	data.Cells = cells
 	data.Score = score
+	data.IsEnd = end
 
 	driver.ExecuteTemplate(w, "Root", data)
 }
 
-func RenderEnd(w http.ResponseWriter) {
-	Render(w)
-
-	// cells := ""
-	//
-	// core.Map(func(value int64) {
-	// 	cellValue := strconv.FormatInt(value, 10)
-	//
-	// 	if cellValue == "0" {
-	// 		cellValue = ""
-	// 	}
-	//
-	// 	cells += fmt.Sprintf("<cell data-value=\"%s\">%s</cell>", cellValue, cellValue)
-	// })
-	//
-	// cells += "<div>Game end xdd!</div>"
-	//
-	// fmt.Fprintf(w, cells)
-
-	// t, err := template.ParseFiles(assets + "/assets/templates/index.html")
-	//
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	//
-	// t.Execute(w, nil)
-}

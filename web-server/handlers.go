@@ -15,12 +15,7 @@ func clickedHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func keyHandler(action string, w http.ResponseWriter) {
-	res := core.Move(action)
-	
-	if res == true {
-		RenderEnd(w)
-		return
-	}
+	core.Move(action)
 
 	Render(w)
 }

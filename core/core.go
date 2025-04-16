@@ -31,8 +31,8 @@ func Map(callback func(value int64)) {
 	}
 }
 
-func State() (Board, Score) {
-	return board, score
+func State() (Board, Score, bool) {
+	return board, score, GameEnd(&board)
 
 }
 

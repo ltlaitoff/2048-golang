@@ -10,6 +10,7 @@
 
 <div id="board">
   {{range .Cells}} {{range .}}{{template "Cell" .}}{{end}} {{end}}
+	{{if .IsEnd}}{{template "End" .}}{{end}}
 </div>
 
 {{end}}

@@ -1,0 +1,15 @@
+{{define "End"}}
+<section class="end">
+	<div class="end-fallback"></div>
+	<div class="end-content">
+		<h2 class="end-title">Game&nbsp;end!</h2>
+	
+		<div class="end-score">
+			<span class="end-score-title">Your&nbsp;score:</span>
+			<span class="end-score-value">{{ .Score }}</span>
+		</div>
+	
+		<button class="end-restart" hx-trigger="click" hx-get="/reset" hx-target="#root">Restart</button>
+	</div>
+</section>
+{{end}}
