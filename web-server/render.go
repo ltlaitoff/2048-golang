@@ -1,10 +1,11 @@
 package webserver
 
 import (
+	"embed"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 
 	"github.com/ltlaitoff/2048/core"
@@ -18,16 +19,17 @@ type RenderData struct {
 	IsEnd bool
 }
 
-var assetsPath string = ""
 var tempatePaths []string
 
-func InitRender(path string) {
-	assetsPath = path
-	tempatePaths = []string{
-		assetsPath + "/assets/templates/index.html",
-		assetsPath + "/assets/templates/root.html",
-		assetsPath + "/assets/templates/cell.html",
-		assetsPath + "/assets/templates/end.html",
+func InitRender(statisFiles embed.FS) {
+  entries, err := fs.ReadDir(assetsFiles, "assets/templates")
+
+	if err != nil {
+		panic(err)
+	}
+
+	for _, entry := range entries {
+		tempatePaths = append(tempatePaths, "assets/templates/" + entry.Name())
 	}
 }
 
@@ -43,8 +45,8 @@ func compileTemplates(filenames ...string) (*template.Template, error) {
 		} else {
 			tmpl = tmpl.New(name)
 		}
-
-		b, err := os.ReadFile(filename)
+	
+		b, err := fs.ReadFile(assetsFiles, filename)
 		if err != nil {
 			return nil, err
 		}

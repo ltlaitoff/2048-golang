@@ -1,15 +1,19 @@
 package webserver
 
 import (
+	"embed"
+	"io/fs"
 	"log"
 	"log/slog"
 	"net/http"
-	"os"
 
 	"github.com/ltlaitoff/2048/core"
 )
 
 const DEBUG = true
+
+//go:embed assets/*
+var assetsFiles embed.FS
 
 func Start() {
 	core.Init()
@@ -18,13 +22,7 @@ func Start() {
 		slog.SetLogLoggerLevel(slog.LevelDebug.Level())
 	}
 
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	assets := dir + "/web-server"
-	InitRender(assets)
+	InitRender(assetsFiles)
 
 	http.HandleFunc("/", viewHandler)
 	http.HandleFunc("/clicked", clickedHandler)
@@ -37,7 +35,9 @@ func Start() {
 	http.HandleFunc("/right", rightHandler)
 	http.HandleFunc("/bottom", bottomHandler)
 
-	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(assets+"/assets"))))
+
+	strippedFS, _ := fs.Sub(assetsFiles, "assets")
+	http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.FS(strippedFS))))
 
 	slog.Info("Started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
