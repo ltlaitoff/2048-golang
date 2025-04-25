@@ -1,3 +1,4 @@
+@import "https://cdn.jsdelivr.net/npm/tailwindcss@4.1.4/index.min.css";
 
 .root {
 	background: var(--color-gray-300);
