@@ -65,6 +65,18 @@ func enterHandler(w http.ResponseWriter, r *http.Request) {
 	Render(w, *isAuthenticated)
 }
 
+func signUpHandler(w http.ResponseWriter, r *http.Request) {
+	auth.AuthSignUp(w, r)
+
+	InitialRender(w, true)
+}
+
+func signInHandler(w http.ResponseWriter, r *http.Request) {
+	auth.AuthSignIn(w, r)
+
+	InitialRender(w, true)
+}
+
 func resetHandler(w http.ResponseWriter, r *http.Request) {
 	isAuthenticated, err := auth.IsAuthorized(r)
 

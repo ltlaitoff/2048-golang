@@ -65,7 +65,7 @@ func signUpUser(user SignUpUserBody) (*bson.ObjectID, error) {
 	return createNewUserSession(userObjectId)
 }
 
-func SignUpHandler(w http.ResponseWriter, r *http.Request) {
+func AuthSignUp(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return

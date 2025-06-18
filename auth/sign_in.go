@@ -44,7 +44,7 @@ func signInUser(user SignInUserBody) (*bson.ObjectID, error) {
 	return createNewUserSession(result.ID)
 }
 
-func SignInHandler(w http.ResponseWriter, r *http.Request) {
+func AuthSignIn(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
