@@ -94,6 +94,6 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	expiration := time.Now().Add(365 * 24 * time.Hour)
-	cookie := http.Cookie{Name: "session_id", Value: sessionId.Hex(), Expires: expiration}
+	cookie := http.Cookie{Name: "session_id", Value: sessionId.Hex(), Expires: expiration, Path: "/"}
 	http.SetCookie(w, &cookie)
 }

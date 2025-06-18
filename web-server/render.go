@@ -17,6 +17,7 @@ type RenderData struct {
 	Score core.Score
 	Cells core.Board
 	IsEnd bool
+	IsAuthenticated bool
 }
 
 var tempatePaths []string
@@ -75,6 +76,7 @@ func InitialRender(w http.ResponseWriter) {
 	data.Cells = cells
 	data.Score = score
 	data.IsEnd = end
+	data.IsAuthenticated = false
 
 	driver.ExecuteTemplate(w, "index.html", data)
 }

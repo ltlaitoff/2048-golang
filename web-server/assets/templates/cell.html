@@ -1,1 +1,7 @@
-{{define "Cell"}} {{if eq . 0}} <cell></cell> {{else}} <cell data-value="{{.}}">{{.}}</cell> {{end}} {{end}}
+{{define "Cell"}} 
+	{{if eq . 0}} 
+		<cell></cell> 
+	{{else}} 
+		<cell data-value="{{.}}">{{.}}</cell> 
+	{{end}} 
+{{end}}

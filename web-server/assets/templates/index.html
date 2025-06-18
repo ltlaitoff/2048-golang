@@ -12,6 +12,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="root">
@@ -23,8 +24,15 @@
 	<div hx-get="/enter" hx-trigger="keyup[key=='Enter'] from:body" hx-target="#root"></div>	
 	<div hx-get="/reset" hx-trigger="keyup[key=='Backspace'] from:body" hx-target="#root"></div>	
 	
-	<div id="root" hx-swap="innerHTML">{{template "Root" .}}</div>
+	<div id="root" hx-swap="innerHTML">
+		{{if .IsAuthenticated}}
+			{{template "Root" .}}
+		{{else}}
+			{{template "Auth" .}}
+		{{end}}
+	</div>
 
 	<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
 </body>
 </html>
