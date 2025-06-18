@@ -22,14 +22,14 @@ type RenderData struct {
 var tempatePaths []string
 
 func InitRender(statisFiles embed.FS) {
-  entries, err := fs.ReadDir(assetsFiles, "assets/templates")
+	entries, err := fs.ReadDir(assetsFiles, "assets/templates")
 
 	if err != nil {
 		panic(err)
 	}
 
 	for _, entry := range entries {
-		tempatePaths = append(tempatePaths, "assets/templates/" + entry.Name())
+		tempatePaths = append(tempatePaths, "assets/templates/"+entry.Name())
 	}
 }
 
@@ -45,7 +45,7 @@ func compileTemplates(filenames ...string) (*template.Template, error) {
 		} else {
 			tmpl = tmpl.New(name)
 		}
-	
+
 		b, err := fs.ReadFile(assetsFiles, filename)
 		if err != nil {
 			return nil, err
@@ -97,4 +97,3 @@ func Render(w http.ResponseWriter) {
 
 	driver.ExecuteTemplate(w, "Root", data)
 }
-

@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/ltlaitoff/2048/auth"
 	"github.com/ltlaitoff/2048/core"
 	"github.com/ltlaitoff/2048/db"
 )
@@ -22,7 +23,7 @@ func Start() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	core.Init()
 
 	if DEBUG {
@@ -42,8 +43,8 @@ func Start() {
 	http.HandleFunc("/right", rightHandler)
 	http.HandleFunc("/bottom", bottomHandler)
 
-	http.HandleFunc("/auth/sign-up", signUpHandler)
-	http.HandleFunc("/auth/sign-in", signInHandler)
+	http.HandleFunc("/auth/sign-up", auth.SignUpHandler)
+	http.HandleFunc("/auth/sign-in", auth.SignInHandler)
 
 	strippedFS, _ := fs.Sub(assetsFiles, "assets")
 	http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.FS(strippedFS))))

@@ -2,9 +2,12 @@ package auth
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/ltlaitoff/2048/db"
@@ -19,7 +22,7 @@ type SignUpUserBody struct {
 	Password string `json:"password"`
 }
 
-func SignUpUser(user SignUpUserBody) (*string, error) {
+func signUpUser(user SignUpUserBody) (*string, error) {
 	collection := db.Database.Database("2048").Collection("users")
 
 	log.Println("Sign up user with name " + user.Name)
@@ -58,4 +61,36 @@ func SignUpUser(user SignUpUserBody) (*string, error) {
 	sessionId := "session-test-0"
 
 	return &sessionId, nil
+}
+
+func SignUpHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Read body
+	b, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	var user SignUpUserBody
+	err = json.Unmarshal(b, &user)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	sessionId, err := signUpUser(user)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	expiration := time.Now().Add(365 * 24 * time.Hour)
+	cookie := http.Cookie{Name: "session_id", Value: *sessionId, Expires: expiration}
+	http.SetCookie(w, &cookie)
 }
