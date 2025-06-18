@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/ltlaitoff/2048/core"
+	"github.com/ltlaitoff/2048/entities"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/html"
 )
@@ -61,7 +62,7 @@ func compileTemplates(filenames ...string) (*template.Template, error) {
 	return tmpl, nil
 }
 
-func InitialRender(w http.ResponseWriter, isAuthenticated bool) {
+func InitialRender(w http.ResponseWriter, session *entities.Session) {
 	drivers := template.Must(compileTemplates(tempatePaths...))
 	driver, err := drivers.Clone()
 
@@ -69,21 +70,21 @@ func InitialRender(w http.ResponseWriter, isAuthenticated bool) {
 		log.Fatal("Cloning helpers: ", err)
 	}
 
-	cells, score, end := core.State()
+	cells, score, end := core.State(session)
 
 	var data RenderData
 
 	data.Cells = cells
 	data.Score = score
 	data.IsEnd = end
-	data.IsAuthenticated = isAuthenticated
+	data.IsAuthenticated = session != nil
 
 	driver.ExecuteTemplate(w, "index.html", data)
 }
 
-func Render(w http.ResponseWriter, isAuthenticated bool) {
-	if isAuthenticated == false {
-		InitialRender(w, isAuthenticated)
+func Render(w http.ResponseWriter, session *entities.Session) {
+	if session == nil {
+		InitialRender(w, session)
 		return
 	}
 
@@ -94,7 +95,7 @@ func Render(w http.ResponseWriter, isAuthenticated bool) {
 		log.Fatal("Cloning helpers: ", err)
 	}
 
-	cells, score, end := core.State()
+	cells, score, end := core.State(session)
 
 	var data RenderData
 

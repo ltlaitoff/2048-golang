@@ -41,6 +41,32 @@ func IsAuthorized(r *http.Request) (*bool, error) {
 	return &isAuthorized, nil
 }
 
+func IsAuthorizedSession(r *http.Request) (*entities.Session, error) {
+	cookie, err := r.Cookie("session_id")
+
+	if err != nil {
+		if errors.Is(err, http.ErrNoCookie) {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	cookieValue := cookie.Value
+
+	session, err := FindSessionByID(cookieValue)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if session.ExpiredAt.Before(time.Now()) {
+		return nil, fmt.Errorf("Expired!")
+	}
+
+	return session, nil
+}
+
 func FindSessionByID(sessionID string) (*entities.Session, error) {
 	collection := db.Database.Database("2048").Collection("sessions")
 

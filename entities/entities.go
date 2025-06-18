@@ -3,7 +3,6 @@ package entities
 import (
 	"time"
 
-	"github.com/ltlaitoff/2048/core"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -27,7 +26,7 @@ type Run struct {
 	ID         bson.ObjectID `bson:"_id,omitempty"`
 	UserID     bson.ObjectID `bson:"user_id"`
 	Score      int           `bson:"score"`
-	Board      core.Board    `bson:"board"`
+	Board      [4][4]int64   `bson:"board"`
 	UserAgent  string        `bson:"user_agent"`
 	CreatedAt  time.Time     `bson:"created_at"`
 	IsFinished bool          `bson:"is_finished,omitempty"`

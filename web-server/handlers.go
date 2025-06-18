@@ -1,7 +1,6 @@
 package webserver
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/ltlaitoff/2048/auth"
@@ -9,34 +8,22 @@ import (
 )
 
 func viewHandler(w http.ResponseWriter, r *http.Request) {
-	isAuthenticated, err := auth.IsAuthorized(r)
+	session, _ := auth.IsAuthorizedSession(r)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	InitialRender(w, *isAuthenticated)
+	InitialRender(w, session)
 }
 
 func clickedHandler(w http.ResponseWriter, r *http.Request) {
-	isAuthenticated, err := auth.IsAuthorized(r)
+	session, _ := auth.IsAuthorizedSession(r)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-	Render(w, *isAuthenticated)
+	Render(w, session)
 }
 
 func keyHandler(action string, w http.ResponseWriter, r *http.Request) {
-	isAuthenticated, err := auth.IsAuthorized(r)
+	session, _ := auth.IsAuthorizedSession(r)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	core.Move(action)
-
-	Render(w, *isAuthenticated)
+	core.Move(action, session, "Test agent")
+	Render(w, session)
 }
 
 func topHandler(w http.ResponseWriter, r *http.Request) {
@@ -56,34 +43,23 @@ func bottomHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func enterHandler(w http.ResponseWriter, r *http.Request) {
-	isAuthenticated, err := auth.IsAuthorized(r)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	Render(w, *isAuthenticated)
+	session, _ := auth.IsAuthorizedSession(r)
+	Render(w, session)
 }
 
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
-	auth.AuthSignUp(w, r)
-
-	InitialRender(w, true)
+	session, _ := auth.AuthSignUp(w, r)
+	InitialRender(w, session)
 }
 
 func signInHandler(w http.ResponseWriter, r *http.Request) {
-	auth.AuthSignIn(w, r)
-
-	InitialRender(w, true)
+	session, _ := auth.AuthSignIn(w, r)
+	InitialRender(w, session)
 }
 
 func resetHandler(w http.ResponseWriter, r *http.Request) {
-	isAuthenticated, err := auth.IsAuthorized(r)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	session, _ := auth.IsAuthorizedSession(r)
 
 	core.Reset()
-	Render(w, *isAuthenticated)
+	Render(w, session)
 }

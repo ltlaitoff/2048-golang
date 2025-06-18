@@ -65,10 +65,10 @@ func signUpUser(user SignUpUserBody) (*bson.ObjectID, error) {
 	return createNewUserSession(userObjectId)
 }
 
-func AuthSignUp(w http.ResponseWriter, r *http.Request) {
+func AuthSignUp(w http.ResponseWriter, r *http.Request) (*entities.Session, error) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-		return
+		return nil, nil
 	}
 
 	// Read body
@@ -76,24 +76,30 @@ func AuthSignUp(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	if err != nil {
 		http.Error(w, err.Error(), 500)
-		return
+		return nil, err
 	}
 
 	var user SignUpUserBody
 	err = json.Unmarshal(b, &user)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
-		return
+		return nil, err
 	}
 
 	sessionId, err := signUpUser(user)
 
 	if err != nil {
 		http.Error(w, err.Error(), 400)
-		return
+		return nil, err
 	}
 
 	expiration := time.Now().Add(365 * 24 * time.Hour)
 	cookie := http.Cookie{Name: "session_id", Value: sessionId.Hex(), Expires: expiration, Path: "/"}
 	http.SetCookie(w, &cookie)
+
+	session, err := FindSessionByID(sessionId.Hex())
+	if err != nil {
+		return nil, err
+	}
+	return session, nil
 }
