@@ -72,7 +72,7 @@ func FindActiveRunForUser(userID bson.ObjectID) (*entities.Run, error) {
 }
 
 // UpdateRun оновлює поле Board, Score, IsFinished для Run за ID
-func UpdateRun(runID bson.ObjectID, board [4][4]int64, score int, isFinished bool) error {
+func UpdateRun(runID bson.ObjectID, board [4][4]int64, score int64, isFinished bool) error {
 	collection := db.Database.Database("2048").Collection("runs")
 	filter := bson.M{"_id": runID}
 	update := bson.M{"$set": bson.M{

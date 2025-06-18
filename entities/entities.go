@@ -25,7 +25,7 @@ type Session struct {
 type Run struct {
 	ID         bson.ObjectID `bson:"_id,omitempty"`
 	UserID     bson.ObjectID `bson:"user_id"`
-	Score      int           `bson:"score"`
+	Score      int64         `bson:"score"`
 	Board      [4][4]int64   `bson:"board"`
 	UserAgent  string        `bson:"user_agent"`
 	CreatedAt  time.Time     `bson:"created_at"`

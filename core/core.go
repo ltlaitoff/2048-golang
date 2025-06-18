@@ -37,10 +37,12 @@ func Move(action string, session *entities.Session, userAgent string) bool {
 		return true
 	}
 
-	MoveCells(board, action)
+	score := run.Score
+
+	MoveCells(board, &score, action)
 	RandomCell(board)
 
-	_ = UpdateRun(run.ID, run.Board, run.Score, false)
+	_ = UpdateRun(run.ID, run.Board, score, false)
 
 	return false
 }

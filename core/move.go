@@ -37,7 +37,7 @@ func moveWithoutMerge(board *Board, data MoveData) {
 	}
 }
 
-func moveWithMerge(board *Board, data MoveData) {
+func moveWithMerge(board *Board, data MoveData, score *int64) {
 	for y := data.YStart; ternary.Ternary(data.reversedY, y > data.YEnd, y < data.YEnd); y += data.YStep {
 		for x := data.XStart; ternary.Ternary(data.reversedX, x > data.XEnd, x < data.XEnd); x += data.XStep {
 			if board[y][x] == 0 {
@@ -51,7 +51,7 @@ func moveWithMerge(board *Board, data MoveData) {
 				newValue := board[y][x] + board[newI][newJ]
 
 				board[newI][newJ] = newValue
-				score += Score(newValue)
+				*score += newValue
 
 				board[y][x] = 0
 			}
@@ -78,12 +78,12 @@ func dataForMove(action string) MoveData {
 	return MoveData{}
 }
 
-func MoveCells(board *Board, action string) {
+func MoveCells(board *Board, score *int64, action string) {
 	data := dataForMove(action)
 
 	slog.Debug(fmt.Sprintf("Move %s", action))
 
 	moveWithoutMerge(board, data)
-	moveWithMerge(board, data)
+	moveWithMerge(board, data, score)
 	moveWithoutMerge(board, data)
 }
