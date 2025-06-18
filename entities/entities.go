@@ -23,10 +23,11 @@ type UserAuth struct {
 }
 
 type Session struct {
-	ID        bson.ObjectID `bson:"_id,omitempty"`
-	UserID    bson.ObjectID `bson:"user_id"`
-	CreatedAt time.Time     `bson:"created_at"`
-	ExpiredAt time.Time     `bson:"expired_at"`
+	ID          bson.ObjectID `bson:"_id,omitempty"`
+	UserID      bson.ObjectID `bson:"user_id"`
+	ActiveRunId bson.ObjectID `bson:"run_id,omitempty"`
+	CreatedAt   time.Time     `bson:"created_at"`
+	ExpiredAt   time.Time     `bson:"expired_at"`
 }
 
 type Run struct {
@@ -37,7 +38,7 @@ type Run struct {
 	UserAgent  string        `bson:"user_agent"`
 	CreatedAt  time.Time     `bson:"created_at"`
 	IsFinished bool          `bson:"is_finished,omitempty"`
-	FinishedAt *time.Time     `bson:"finished_at,omitempty"`
+	FinishedAt *time.Time    `bson:"finished_at,omitempty"`
 	Duration   int64         `bson:"duration_ms,omitempty"`
 }
 
