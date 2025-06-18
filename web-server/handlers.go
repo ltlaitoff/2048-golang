@@ -1,8 +1,11 @@
 package webserver
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
 
+	"github.com/ltlaitoff/2048/auth"
 	"github.com/ltlaitoff/2048/core"
 )
 
@@ -38,6 +41,34 @@ func bottomHandler(w http.ResponseWriter, r *http.Request) {
 
 func enterHandler(w http.ResponseWriter, r *http.Request) {
 	Render(w)
+}
+
+func signUpHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Read body
+	b, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	var user auth.SignUpUserBody
+	err = json.Unmarshal(b, &user)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	err = auth.SignUpUser(user)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
 }
 
 func resetHandler(w http.ResponseWriter, r *http.Request) {

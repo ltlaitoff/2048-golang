@@ -7,14 +7,17 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-func ConnectMongoDb(url string) (*mongo.Client, error) {
+var Database *mongo.Client
+
+func ConnectMongoDb(url string) error {
 	client, err := mongo.Connect(options.Client().ApplyURI(url))
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
+	Database = client
 	slog.Info("MongoClient connected")
 
-	return client, nil
+	return nil
 }

@@ -8,15 +8,8 @@ import (
 )
 
 type User struct {
-	ID        bson.ObjectID `bson:"_id,omitempty"`
-	Name      string        `bson:"name"`
-	Email     string        `bson:"email"`
-	CreatedAt time.Time     `bson:"created_at"`
-}
-
-type UserAuth struct {
 	ID           bson.ObjectID `bson:"_id,omitempty"`
-	UserID       bson.ObjectID `bson:"user_id"`
+	Name         string        `bson:"name"`
 	Email        string        `bson:"email"`
 	PasswordHash string        `bson:"password_hash"`
 	CreatedAt    time.Time     `bson:"created_at"`
