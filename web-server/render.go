@@ -19,6 +19,7 @@ type RenderData struct {
 	Cells           core.Board
 	IsEnd           bool
 	IsAuthenticated bool
+	Leaderboard     []core.LeaderboardRow
 }
 
 var tempatePaths []string
@@ -79,6 +80,10 @@ func InitialRender(w http.ResponseWriter, session *entities.Session) {
 	data.IsEnd = end
 	data.IsAuthenticated = session != nil
 
+	leaderboard, _ := core.GetLeaderboard()
+	data.Leaderboard = leaderboard
+
+	// driver.Funcs(template.FuncMap{"add1": func(i int) int { return i + 1 }})
 	driver.ExecuteTemplate(w, "index.html", data)
 }
 
@@ -103,5 +108,10 @@ func Render(w http.ResponseWriter, session *entities.Session) {
 	data.Score = score
 	data.IsEnd = end
 
+	leaderboard, _ := core.GetLeaderboard()
+	log.Println(leaderboard)
+	data.Leaderboard = leaderboard
+
+	// driver.Funcs(template.FuncMap{"add1": func(i int) int { return i + 1 }})
 	driver.ExecuteTemplate(w, "Root", data)
 }
