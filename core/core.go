@@ -1,6 +1,8 @@
 package core
 
 import (
+	"time"
+
 	"github.com/ltlaitoff/2048/entities"
 )
 
@@ -39,7 +41,15 @@ func Move(action string, session *entities.Session, userAgent string) bool {
 
 	score := run.Score
 
+	// duration: різниця між CreatedAt поточного run і CreatedAt останнього запису runs_history
+	duration := int64(0)
+	history, err := GetLastRunHistoryRecord(run.ID)
+	if err == nil && history != nil {
+		duration = time.Now().Sub(history.CreatedAt).Milliseconds()
+	}
+
 	MoveCells(board, &score, action)
+	_ = AddRunHistoryRecord(run.ID, action, duration)
 	RandomCell(board)
 
 	_ = UpdateRun(run.ID, run.Board, score, false)

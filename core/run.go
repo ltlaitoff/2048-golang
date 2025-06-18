@@ -9,6 +9,7 @@ import (
 	"github.com/ltlaitoff/2048/entities"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 // FindRunByID знаходить Run за його ID
@@ -91,4 +92,30 @@ func UpdateSessionActiveRunId(sessionID, runID bson.ObjectID) error {
 	update := bson.M{"$set": bson.M{"run_id": runID}}
 	_, err := collection.UpdateOne(context.Background(), filter, update)
 	return err
+}
+
+// AddRunHistoryRecord додає запис про хід у runs_history
+func AddRunHistoryRecord(runID bson.ObjectID, movement string, duration int64) error {
+	collection := db.Database.Database("2048").Collection("runs_history")
+	record := entities.RunHistoryRecord{
+		RunID:     runID,
+		Movement:  entities.MovementType(movement),
+		Duration:  duration,
+		CreatedAt: time.Now(),
+	}
+	_, err := collection.InsertOne(context.Background(), record)
+	return err
+}
+
+// GetLastRunHistoryRecord повертає останній запис з runs_history для runID
+func GetLastRunHistoryRecord(runID bson.ObjectID) (*entities.RunHistoryRecord, error) {
+	collection := db.Database.Database("2048").Collection("runs_history")
+	filter := bson.M{"run_id": runID}
+	var record entities.RunHistoryRecord
+	opts := options.FindOne().SetSort(bson.M{"created_at": -1})
+	err := collection.FindOne(context.Background(), filter, opts).Decode(&record)
+	if err != nil {
+		return nil, err
+	}
+	return &record, nil
 }
