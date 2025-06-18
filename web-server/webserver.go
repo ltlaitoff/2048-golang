@@ -10,6 +10,7 @@ import (
 
 	"github.com/ltlaitoff/2048/core"
 	"github.com/ltlaitoff/2048/db"
+	"github.com/ltlaitoff/2048/entities"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -25,12 +26,7 @@ func Start() {
 		log.Fatal(err)
 	}
 
-	type User struct {
-		ID   bson.ObjectID `bson:"_id,omitempty"`
-		Name string        `bson:"name"`
-	}
-
-	var results []User
+	var results []entities.User
 
 	collection := database.Database("2048").Collection("users")
 	finded, err2 := collection.Find(context.Background(), bson.D{})
