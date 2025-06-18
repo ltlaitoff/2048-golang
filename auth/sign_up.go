@@ -53,5 +53,7 @@ func SignUpUser(user SignUpUserBody) error {
 		return err
 	}
 
+	// TODO: Create session and add this to cookies
+
 	return nil
 }

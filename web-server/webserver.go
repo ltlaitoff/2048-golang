@@ -43,6 +43,7 @@ func Start() {
 	http.HandleFunc("/bottom", bottomHandler)
 
 	http.HandleFunc("/auth/sign-up", signUpHandler)
+	http.HandleFunc("/auth/sign-in", signInHandler)
 
 	strippedFS, _ := fs.Sub(assetsFiles, "assets")
 	http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.FS(strippedFS))))

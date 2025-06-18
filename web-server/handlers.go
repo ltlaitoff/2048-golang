@@ -71,6 +71,34 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func signInHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Read body
+	b, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	var user auth.SignInUserBody
+	err = json.Unmarshal(b, &user)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	err = auth.SignInUser(user)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+}
+
 func resetHandler(w http.ResponseWriter, r *http.Request) {
 	core.Reset()
 	Render(w)
