@@ -60,6 +60,6 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 func resetHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := auth.IsAuthorizedSession(r)
 
-	core.Reset()
+	core.Reset(session)
 	Render(w, session)
 }

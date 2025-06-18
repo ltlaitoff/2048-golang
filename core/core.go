@@ -47,16 +47,14 @@ func Move(action string, session *entities.Session, userAgent string) bool {
 	return false
 }
 
-func Reset() {
-	for i := 0; i < 4; i++ {
-		for j := 0; j < 4; j++ {
-			board[i][j] = 0
+func Reset(session *entities.Session) {
+	if session != nil {
+		runId, err := CreateNewRun(session.UserID, Board{}, "Reset agent")
+		if err == nil {
+			session.ActiveRunId = *runId
+			_ = UpdateSessionActiveRunId(session.ID, *runId)
 		}
 	}
-
-	score = 0
-
-	RandomCell(&board)
 }
 
 func Map(callback func(value int64)) {
