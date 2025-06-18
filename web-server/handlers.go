@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/ltlaitoff/2048/auth"
 	"github.com/ltlaitoff/2048/core"
@@ -64,11 +65,15 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = auth.SignUpUser(user)
+	sessionId, err := auth.SignUpUser(user)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
+
+	expiration := time.Now().Add(365 * 24 * time.Hour)
+	cookie := http.Cookie{Name: "session_id", Value: *sessionId, Expires: expiration}
+	http.SetCookie(w, &cookie)
 }
 
 func signInHandler(w http.ResponseWriter, r *http.Request) {
@@ -92,11 +97,15 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = auth.SignInUser(user)
+	sessionId, err := auth.SignInUser(user)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
+
+	expiration := time.Now().Add(365 * 24 * time.Hour)
+	cookie := http.Cookie{Name: "session_id", Value: *sessionId, Expires: expiration}
+	http.SetCookie(w, &cookie)
 }
 
 func resetHandler(w http.ResponseWriter, r *http.Request) {

@@ -17,7 +17,7 @@ type SignInUserBody struct {
 	Password string `json:"password"`
 }
 
-func SignInUser(user SignInUserBody) error {
+func SignInUser(user SignInUserBody) (*string, error) {
 	collection := db.Database.Database("2048").Collection("users")
 
 	log.Println("Sign in user " + user.Email)
@@ -31,7 +31,7 @@ func SignInUser(user SignInUserBody) error {
 
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return fmt.Errorf("Invalid credentials")
+			return nil, fmt.Errorf("Invalid credentials")
 		}
 
 		log.Panic(err)
@@ -39,5 +39,7 @@ func SignInUser(user SignInUserBody) error {
 
 	// TODO: Create session and add this to cookies
 
-	return nil
+	sessionId := "session-test-1"
+
+	return &sessionId, nil
 }

@@ -19,7 +19,7 @@ type SignUpUserBody struct {
 	Password string `json:"password"`
 }
 
-func SignUpUser(user SignUpUserBody) error {
+func SignUpUser(user SignUpUserBody) (*string, error) {
 	collection := db.Database.Database("2048").Collection("users")
 
 	log.Println("Sign up user with name " + user.Name)
@@ -32,12 +32,12 @@ func SignUpUser(user SignUpUserBody) error {
 	err := collection.FindOne(context.Background(), filter).Decode(&result)
 
 	if err == nil {
-		return fmt.Errorf("Invalid credentials")
+		return nil, fmt.Errorf("Invalid credentials")
 	}
 
 	if errors.Is(err, mongo.ErrNoDocuments) == false {
 		log.Panic(err)
-		return fmt.Errorf("Something went wrong!")
+		return nil, fmt.Errorf("Something went wrong!")
 	}
 
 	newUser := entities.User{
@@ -50,10 +50,12 @@ func SignUpUser(user SignUpUserBody) error {
 	_, err = collection.InsertOne(context.Background(), newUser)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// TODO: Create session and add this to cookies
 
-	return nil
+	sessionId := "session-test-0"
+
+	return &sessionId, nil
 }
