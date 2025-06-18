@@ -14,9 +14,9 @@ import (
 )
 
 type RenderData struct {
-	Score core.Score
-	Cells core.Board
-	IsEnd bool
+	Score           core.Score
+	Cells           core.Board
+	IsEnd           bool
 	IsAuthenticated bool
 }
 
@@ -61,7 +61,7 @@ func compileTemplates(filenames ...string) (*template.Template, error) {
 	return tmpl, nil
 }
 
-func InitialRender(w http.ResponseWriter) {
+func InitialRender(w http.ResponseWriter, isAuthenticated bool) {
 	drivers := template.Must(compileTemplates(tempatePaths...))
 	driver, err := drivers.Clone()
 
@@ -76,12 +76,17 @@ func InitialRender(w http.ResponseWriter) {
 	data.Cells = cells
 	data.Score = score
 	data.IsEnd = end
-	data.IsAuthenticated = false
+	data.IsAuthenticated = isAuthenticated
 
 	driver.ExecuteTemplate(w, "index.html", data)
 }
 
-func Render(w http.ResponseWriter) {
+func Render(w http.ResponseWriter, isAuthenticated bool) {
+	if isAuthenticated == false {
+		InitialRender(w, isAuthenticated)
+		return
+	}
+
 	drivers := template.Must(compileTemplates(tempatePaths...))
 	driver, err := drivers.Clone()
 
