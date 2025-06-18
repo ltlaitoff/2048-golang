@@ -22,7 +22,7 @@ type SignUpUserBody struct {
 	Password string `json:"password"`
 }
 
-func signUpUser(user SignUpUserBody) (*string, error) {
+func signUpUser(user SignUpUserBody) (*bson.ObjectID, error) {
 	collection := db.Database.Database("2048").Collection("users")
 
 	log.Println("Sign up user with name " + user.Name)
@@ -43,24 +43,26 @@ func signUpUser(user SignUpUserBody) (*string, error) {
 		return nil, fmt.Errorf("Something went wrong!")
 	}
 
-	newUser := entities.User{
+	userData := entities.User{
 		Name:         user.Name,
 		Email:        user.Email,
 		PasswordHash: user.Password,
 		CreatedAt:    time.Now(),
 	}
 
-	_, err = collection.InsertOne(context.Background(), newUser)
+	insertionResult, err := collection.InsertOne(context.Background(), userData)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: Create session and add this to cookies
+	userObjectId, ok := insertionResult.InsertedID.(bson.ObjectID)
 
-	sessionId := "session-test-0"
+	if !ok {
+		return nil, fmt.Errorf("InsertedID is not an ObjectID")
+	}
 
-	return &sessionId, nil
+	return createNewUserSession(userObjectId)
 }
 
 func SignUpHandler(w http.ResponseWriter, r *http.Request) {
@@ -85,12 +87,13 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sessionId, err := signUpUser(user)
+
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
 
 	expiration := time.Now().Add(365 * 24 * time.Hour)
-	cookie := http.Cookie{Name: "session_id", Value: *sessionId, Expires: expiration}
+	cookie := http.Cookie{Name: "session_id", Value: sessionId.Hex(), Expires: expiration}
 	http.SetCookie(w, &cookie)
 }

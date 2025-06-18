@@ -21,7 +21,7 @@ type SignInUserBody struct {
 	Password string `json:"password"`
 }
 
-func signInUser(user SignInUserBody) (*string, error) {
+func signInUser(user SignInUserBody) (*bson.ObjectID, error) {
 	collection := db.Database.Database("2048").Collection("users")
 
 	log.Println("Sign in user " + user.Email)
@@ -38,14 +38,10 @@ func signInUser(user SignInUserBody) (*string, error) {
 			return nil, fmt.Errorf("Invalid credentials")
 		}
 
-		log.Panic(err)
+		return nil, err
 	}
 
-	// TODO: Create session and add this to cookies
-
-	sessionId := "session-test-1"
-
-	return &sessionId, nil
+	return createNewUserSession(result.ID)
 }
 
 func SignInHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,12 +66,13 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sessionId, err := signInUser(user)
+
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
 
 	expiration := time.Now().Add(365 * 24 * time.Hour)
-	cookie := http.Cookie{Name: "session_id", Value: *sessionId, Expires: expiration}
+	cookie := http.Cookie{Name: "session_id", Value: sessionId.Hex(), Expires: expiration}
 	http.SetCookie(w, &cookie)
 }
