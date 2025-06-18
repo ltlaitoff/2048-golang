@@ -16,14 +16,6 @@
 </head>
 
 <body class="root">
-	<div hx-get="/top" hx-trigger="keyup[key=='w'] from:body, keyup[key=='ArrowUp'] from:body" hx-target="#root"></div>	
-	<div hx-get="/left" hx-trigger="keyup[key=='a'] from:body, keyup[key=='ArrowLeft'] from:body" hx-target="#root"></div>	
-	<div hx-get="/right" hx-trigger="keyup[key=='d'] from:body, keyup[key=='ArrowRight'] from:body" hx-target="#root"></div>	
-	<div hx-get="/bottom" hx-trigger="keyup[key=='s'] from:body, keyup[key=='ArrowDown'] from:body" hx-target="#root"></div>	
-
-	<div hx-get="/enter" hx-trigger="keyup[key=='Enter'] from:body" hx-target="#root"></div>	
-	<div hx-get="/reset" hx-trigger="keyup[key=='Backspace'] from:body" hx-target="#root"></div>	
-	
 	<div id="root" hx-swap="innerHTML">
 		{{if .IsAuthenticated}}
 			{{template "Root" .}}
