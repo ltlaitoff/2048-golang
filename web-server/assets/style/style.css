@@ -1,16 +1,5 @@
 @import "https://cdn.jsdelivr.net/npm/tailwindcss@4.1.4/index.min.css";
 
-.root {
-	background: var(--color-gray-300);
-	height: 100dvh;
-	padding: 0;
-	margin: 0;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
 #root {
 	--padding: 2rem;
 	--cell-radius: 0.75rem;
@@ -25,14 +14,13 @@
 }
 
 #board {
-	--cell-size: 7rem;
 	--gap-size: 1rem;
 
 	position: relative;
 
 	display: grid;
-	grid-template-columns: repeat(4, var(--cell-size));
-	grid-template-rows: repeat(4, var(--cell-size));
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
 	gap: var(--gap-size);
 }
 
@@ -41,13 +29,6 @@
 cell {
 	--bg: var(--color-gray-100);
 	--text: white;
-	
-	width: var(--cell-size);
-	height: var(--cell-size);
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
 
 	border-radius: var(--cell-radius);
 	background: var(--bg);

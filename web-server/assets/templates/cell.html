@@ -1,7 +1,7 @@
 {{define "Cell"}} 
 	{{if eq . 0}} 
-		<cell></cell> 
+		<cell class="lg:size-28 md:size-21 size-14"></cell> 
 	{{else}} 
-		<cell data-value="{{.}}">{{.}}</cell> 
+		<cell class="lg:size-28 md:size-21 size-14 flex items-center justify-center" data-value="{{.}}">{{.}}</cell> 
 	{{end}} 
 {{end}}

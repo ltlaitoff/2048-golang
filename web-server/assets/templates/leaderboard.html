@@ -1,13 +1,13 @@
 {{define "Leaderboard"}}
-<h3 class="text-xl font-bold mt-6 mb-2 text-center">Leaderboard</h3>
-<div class="grid grid-cols-3 gap-2 bg-gray-100 rounded-lg p-4 mx-auto max-w-md">
-  <div class="font-semibold text-gray-700">#</div>
+<h3 class="text-4xl font-bold mt-15 mb-2 text-center">Leaderboard</h3>
+<div class="text-2xl grid grid-cols-[1fr_5fr_5fr] gap-2 bg-gray-100 rounded-2xl w-full p-4 text-center">
+  <div class="font-semibold text-gray-700 text-left">#</div>
   <div class="font-semibold text-gray-700">Name</div>
   <div class="font-semibold text-gray-700">Score</div>
   {{range $i, $row := .Leaderboard}}
-    <div class="text-gray-500">{{$i}}</div>
+    <div class="text-gray-500 text-left">{{$i}}</div>
     <div class="truncate">{{$row.Name}}</div>
-    <div class="font-bold text-right">{{$row.Score}}</div>
+    <div class="font-bold text-amber-500">{{$row.Score}}</div>
   {{end}}
 </div>
 {{end}}
