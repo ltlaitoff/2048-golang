@@ -72,7 +72,6 @@ cell[data-value="16384"]	{ --bg: var(--color-emerald-300); --text: var(--color-e
 .score {
 	padding: 0.25rem 0.5rem;
 	background: var(--color-slate-200);
-	border-radius: 1rem;
 
 	display: flex;
 	column-gap: 0.5rem;

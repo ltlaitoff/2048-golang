@@ -42,11 +42,6 @@ func bottomHandler(w http.ResponseWriter, r *http.Request) {
 	keyHandler("BOTTOM", w, r)
 }
 
-func enterHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := auth.IsAuthorizedSession(r)
-	Render(w, session)
-}
-
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := auth.AuthSignUp(w, r)
 	InitialRender(w, session)

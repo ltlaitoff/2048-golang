@@ -60,6 +60,7 @@ func Move(action string, session *entities.Session, userAgent string) bool {
 func Reset(session *entities.Session) {
 	if session != nil {
 		runId, err := CreateNewRun(session.UserID, Board{}, "Reset agent")
+
 		if err == nil {
 			session.ActiveRunId = *runId
 			_ = UpdateSessionActiveRunId(session.ID, *runId)

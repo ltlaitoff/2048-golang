@@ -34,7 +34,6 @@ func Start() {
 	http.HandleFunc("/", viewHandler)
 	http.HandleFunc("/clicked", clickedHandler)
 
-	http.HandleFunc("/enter", enterHandler)
 	http.HandleFunc("/reset", resetHandler)
 
 	http.HandleFunc("/top", topHandler)
