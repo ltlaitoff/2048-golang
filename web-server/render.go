@@ -20,6 +20,8 @@ type RenderData struct {
 	IsEnd           bool
 	IsAuthenticated bool
 	Leaderboard     []core.LeaderboardRow
+	SignUpError     string
+	SignInError     string
 }
 
 var tempatePaths []string
@@ -61,6 +63,29 @@ func compileTemplates(filenames ...string) (*template.Template, error) {
 		tmpl.Parse(string(mb))
 	}
 	return tmpl, nil
+}
+
+func InitialRenderAuth(w http.ResponseWriter, isError bool, authType string) {
+	drivers := template.Must(compileTemplates(tempatePaths...))
+	driver, err := drivers.Clone()
+
+	if err != nil {
+		log.Fatal("Cloning helpers: ", err)
+	}
+
+	var data RenderData
+
+	data.IsAuthenticated = false
+
+	if authType == "up" {
+		data.SignUpError = "Invalid credentials!"
+	}
+
+	if authType == "in" {
+		data.SignInError = "Invalid credentials!"
+	}
+
+	driver.ExecuteTemplate(w, "index.html", data)
 }
 
 func InitialRender(w http.ResponseWriter, session *entities.Session) {

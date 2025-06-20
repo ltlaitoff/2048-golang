@@ -43,12 +43,24 @@ func bottomHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := auth.AuthSignUp(w, r)
+	session, err := auth.AuthSignUp(w, r)
+
+	if err != nil {
+		InitialRenderAuth(w, true, "up")
+		return
+	}
+
 	InitialRender(w, session)
 }
 
 func signInHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := auth.AuthSignIn(w, r)
+	session, err := auth.AuthSignIn(w, r)
+
+	if err != nil {
+		InitialRenderAuth(w, true, "in")
+		return
+	}
+
 	InitialRender(w, session)
 }
 

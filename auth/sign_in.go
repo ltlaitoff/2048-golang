@@ -54,21 +54,21 @@ func AuthSignIn(w http.ResponseWriter, r *http.Request) (*entities.Session, erro
 	b, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		// http.Error(w, err.Error(), 500)
 		return nil, err
 	}
 
 	var user SignInUserBody
 	err = json.Unmarshal(b, &user)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		// http.Error(w, err.Error(), 500)
 		return nil, err
 	}
 
 	sessionId, err := signInUser(user)
 
 	if err != nil {
-		http.Error(w, err.Error(), 400)
+		// http.Error(w, err.Error(), 400)
 		return nil, err
 	}
 
